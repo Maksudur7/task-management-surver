@@ -1,23 +1,11 @@
 const express = require('express')
-const cors = require('cors')
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000;
 
-// i5ZN8wEwMsCxYvXm
-// task-management-project
 
-
-app.use(cors({
-    origin: [
-        'http://localhost:5173'
-    ],
-    credentials: true
-}))
 app.use(express.json())
-
-
 
 
 const uri = `mongodb+srv://${process.env.USER_ID}:${process.env.USER_PASS}@cluster0.gehw4nj.mongodb.net/?retryWrites=true&w=majority`;
@@ -48,9 +36,14 @@ async function run() {
             const result = await userCollection.find(user).toArray()
             res.send(result)
         })
-        app.post('/task', async(req, res) =>{
+        app.post('/task', async (req, res) => {
             const task = req.body
             const result = await TaskCollection.insertOne(task)
+            res.send(result)
+        })
+
+        app.get('/task', async (req, res) => {
+            const result = await TaskCollection.find().toArray()
             res.send(result)
         })
 
